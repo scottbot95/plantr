@@ -54,12 +54,17 @@ db.sync({force: true}).then(() => {
   plots = createdPlots;
 
   return Promise.all(plots.map(plot => {
-    const numVeggies = Math.ceil(plot.size / 10);
+    const numVeggies = Math.min(Math.ceil(plot.size / 10), veggies.length);
+    
     const allowedVeggies = [...veggies];
+    
     const plotVeggies = Array(numVeggies).fill(null).map(() => {
+      // console.log(allowedVeggies.map(v => v ? v.name : undefined));
       const rand = Math.floor(Math.random() * allowedVeggies.length);
       return allowedVeggies.splice(rand, 1)[0];
+      // return allowedVeggies[rand];
     });
+    // console.log(plotVeggies.map(p => p.id));
 
     const p1 = plot.setVegetables(plotVeggies);
 
